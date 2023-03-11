@@ -1,5 +1,7 @@
 name: Android CI/CD
 
+chmod +x gradlew
+
 on:
   push:
     branches: [ main ]
