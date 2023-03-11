@@ -41,7 +41,7 @@ jobs:
         name: app
         path: ./
     - name: Distribute to App Center
-      uses: wzieba/AppCenter-GitHub-Action@v1.2.1
+      uses: wzieba/AppCenter-GitHub-Action@v1.3.3
       with:
         appName: LearnProgrammingAcademyHG/My-Investments
         token: ${{secrets.APP_CENTER_TOKEN}}
