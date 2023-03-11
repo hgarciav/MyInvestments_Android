@@ -2,21 +2,24 @@ name: Android CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
-  build:
-
+  builds:
+  
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.3.0
+    - name: Make gradlew executable
+      run:  chmod +x ./gradlew
     - name: set up JDK 1.8
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v3.10.0
       with:
-        java-version: 1.8
+        java-version: 11
+        distribution: 'temurin'
     - name: Build with Gradle
       run: ./gradlew build
     - name: Upload APK
@@ -24,24 +27,3 @@ jobs:
       with:
         name: app
         path: app/build/outputs/apk/debug/app-debug.apk
-        
-  distribute:
-    
-    needs: [ build ]
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Download APK
-      uses: actions/download-artifact@v2.0.5
-      id: download
-      with:
-        name: app
-        path: ./
-    - name: Distribute to App Center
-      uses: wzieba/AppCenter-Github-Action@v1.2.1
-      with:
-        appName: LearnProgrammingAcademy/My-Investments
-        token: ${{secrets.APP_CENTER_TOKEN}}
-        group: Beta Testers
-        file: ${{steps.download.outputs.download-path}}/app-debug.apk
-        notifyTesters: true
